@@ -17,8 +17,10 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact_name: teams-cli-linux-amd64
+            strip: true
           - os: macos-latest
             artifact_name: teams-cli-darwin-arm64
+            strip: false
 
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +28,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache PyInstaller build
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-pyinstaller-${{ hashFiles('teams_cli.py', 'requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pyinstaller-
 
       - name: Install dependencies
         run: pip install -r requirements.txt pyinstaller
@@ -39,7 +57,27 @@ jobs:
           "
 
       - name: Build binary
-        run: pyinstaller --onefile --name ${{ matrix.artifact_name }} teams_cli.py
+        run: |
+          pyinstaller --onefile \
+            --name ${{ matrix.artifact_name }} \
+            ${{ matrix.strip && '--strip' || '' }} \
+            --exclude-module tkinter \
+            --exclude-module _tkinter \
+            --exclude-module unittest \
+            --exclude-module email \
+            --exclude-module xml \
+            --exclude-module html \
+            --exclude-module pydoc \
+            --exclude-module doctest \
+            --exclude-module difflib \
+            --exclude-module sqlite3 \
+            --exclude-module multiprocessing \
+            --exclude-module logging \
+            --exclude-module asyncio \
+            --exclude-module concurrent \
+            --exclude-module http.server \
+            --exclude-module xmlrpc \
+            teams_cli.py
 
       - uses: actions/upload-artifact@v4
         with:
