@@ -72,7 +72,6 @@ jobs:
             --exclude-module difflib \
             --exclude-module sqlite3 \
             --exclude-module multiprocessing \
-            --exclude-module logging \
             --exclude-module asyncio \
             --exclude-module concurrent \
             --exclude-module http.server \
