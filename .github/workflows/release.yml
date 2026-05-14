@@ -64,7 +64,6 @@ jobs:
             --exclude-module tkinter \
             --exclude-module _tkinter \
             --exclude-module unittest \
-            --exclude-module email \
             --exclude-module xml \
             --exclude-module html \
             --exclude-module pydoc \
