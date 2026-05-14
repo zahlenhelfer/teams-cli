@@ -9,7 +9,7 @@ import sys
 import requests
 from typing import Optional
 
-__version__ = "0.0.0"
+__version__ = "1.0.0"
 
 API_BASE_URL = "http://teams-api.127.0.0.1.sslip.io"
 
