@@ -97,9 +97,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  teams-cli health                    # Check API health
-  teams-cli create "Backend Team"     # Create a new team
-  teams-cli list                      # List all teams
+  teams-cli health                   # Check API health
+  teams-cli create "Backend Team"    # Create a new team
+  teams-cli list                     # List all teams
   teams-cli get <team-id>            # Get specific team
   teams-cli delete <team-id>         # Delete a team
         """
